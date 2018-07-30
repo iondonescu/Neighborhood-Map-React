@@ -35,12 +35,15 @@ componentDidMount() {
     alert('Something went wrong while fetching the locations from Forsquare. Please try again later.');
   })
 }
+
+
+
   render() {
     return (
       <div>
         <CityMap
         locations={this.state.locations}
-	      	query={this.state.query}
+	      query={this.state.query}
           />
         <PlacesList
         locations={this.state.locations}
