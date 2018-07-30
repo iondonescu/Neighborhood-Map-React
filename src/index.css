@@ -29,3 +29,13 @@ li:hover {
   margin-left:5px;
   width:200px;
 }
+@media screen and (max-width: 450px) {
+	.list {
+		height: 140px;
+		margin-top: 50px;
+		margin-left: 10px;
+		overflow-y: scroll;
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+}

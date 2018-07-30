@@ -12,6 +12,8 @@ class PlacesList extends Component {
       value={this.props.query}
       onChange={this.props.onChangeQuery}
       onClick={this.props.onInputClick}
+      tabIndex="1"
+			aria-labelledby="filter"
       />
       <ul className='list'>
           {this.props.locations.filter(location => {
@@ -21,6 +23,8 @@ class PlacesList extends Component {
               <li
               key={location.title}
               onClick={this.props.onClickLocation}
+              tabIndex="2"
+						  aria-label="Location"
               >
               {location.title}
               </li>
