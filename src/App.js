@@ -1,7 +1,6 @@
 import React,{ Component } from 'react'
 import CityMap from './components/CityMap'
 import PlacesList from './components/PlacesList'
-import {InfoWindow} from 'google-maps-react'
 
 class App extends Component {
   state = {
