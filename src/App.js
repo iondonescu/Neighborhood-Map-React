@@ -1,5 +1,6 @@
 import React,{ Component } from 'react'
 import CityMap from './components/CityMap'
+import PlacesList from './components/PlacesList'
 
 class App extends Component {
   state = {
@@ -41,6 +42,10 @@ componentDidMount() {
         locations={this.state.locations}
 	      	query={this.state.query}
           />
+        <PlacesList
+        locations={this.state.locations}
+        query={this.state.query}
+        />
       </div>
     );
   }
