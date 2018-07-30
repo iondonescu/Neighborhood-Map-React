@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import {Map, GoogleApiWrapper, Marker} from 'google-maps-react'
-
+import {Map, GoogleApiWrapper, Marker,InfoWindow} from 'google-maps-react'
 
 //Google Maps API script error handler
 document.addEventListener("DOMContentLoaded", function(error) {
@@ -12,6 +11,20 @@ document.addEventListener("DOMContentLoaded", function(error) {
 });
 
 class CityMap extends Component {
+state = {
+  markerSelected:{},
+  placeSelected:{},
+  markerInfoWindowSelected:false
+}
+
+//function for changing the state with the selected marker
+onClickMarker =(props,marker) => {
+  this.setState ({
+    markerSelected:marker,
+    placeSelected:props,
+    markerInfoWindowSelected:true
+  })
+}
 
 render(){
   const bound = new this.props.google.maps.LatLngBounds()
@@ -29,28 +42,36 @@ render(){
 
     {
   this.props.locations
-
   .map(location => {
-    return (
-      <Marker
-      // props of featched locations
-        key={location.id}
-        address={location.address}
-        category={location.category}
-        coordinates={location.coordinates}
-        crossStreet={location.crossStreet}
-        position={{ lat: location.position.lat, lng: location.position.lng}}
-        postalCode={location.postalCode}
-        state={location.state}
-        title={location.title}
-      // set animation for markers
-        animation={this.props.google.maps.Animation.Fo}
-
-      />
-    )
+        return (
+          <Marker
+          // props of featched locations
+            key={location.id}
+            address={location.address}
+            category={location.category}
+            coordinates={location.coordinates}
+            crossStreet={location.crossStreet}
+            position={{ lat: location.position.lat, lng: location.position.lng}}
+            postalCode={location.postalCode}
+            state={location.state}
+            title={location.title}
+          // set animation for markers
+            animation={this.props.google.maps.Animation.Fo}
+            onClick = {this.onClickMarker}
+          />
+        )
   })
 }
-    </Map>
+    <InfoWindow marker = {this.state.markerSelected} visible={this.state.markerInfoWindowSelected}>
+      <div>
+        <h2>{this.state.placeSelected.title}</h2>
+        <h3>{this.state.placeSelected.category}</h3>
+        <p>Address:{this.state.placeSelected.address}</p>
+        <p><strong> More on <a rel="external" href="https://foursquare.com/">Foursquare</a></strong></p>
+      </div>
+    </InfoWindow>
+
+  </Map>
   )
   }
 }
