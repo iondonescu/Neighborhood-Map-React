@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import {Map, GoogleApiWrapper, Marker,InfoWindow} from 'google-maps-react'
+import escregexp from 'escape-regexp'
+
 
 //Google Maps API script error handler
 document.addEventListener("DOMContentLoaded", function(error) {
@@ -28,7 +30,7 @@ onClickMarker =(props,marker) => {
 
 render(){
   const bound = new this.props.google.maps.LatLngBounds()
-
+  const expression = new RegExp(escregexp(this.props.query).toLowerCase().trim())
 	    for (let i = 0; i < this.props.locations.length; i++) {
       		bound.extend(this.props.locations[i].position)
     	}
@@ -41,7 +43,9 @@ render(){
     >
 
     {
-  this.props.locations
+  this.props.locations.filter(location => {
+						return expression.test(location.title.toLowerCase())
+					})
   .map(location => {
         return (
           <Marker
@@ -62,7 +66,7 @@ render(){
         )
   })
 }
-    <InfoWindow marker = {this.state.markerSelected} visible={this.state.markerInfoWindowSelected}>
+    <InfoWindow marker = {this.state.markerSelected} visible = {this.state.markerInfoWindowSelected}>
       <div>
         <h2>{this.state.placeSelected.title}</h2>
         <h3>{this.state.placeSelected.category}</h3>

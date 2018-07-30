@@ -1,11 +1,11 @@
 import React,{ Component } from 'react'
 import CityMap from './components/CityMap'
 import PlacesList from './components/PlacesList'
+import {InfoWindow} from 'google-maps-react'
 
 class App extends Component {
   state = {
   locations: [],
-  locationInfo: {},
   query: ''
 }
 
@@ -36,18 +36,39 @@ componentDidMount() {
   })
 }
 
+onClickLocation = event => {
+  this.setState({
+    query: event.target.textContent
+    })
+  }
 
+updateQuery = event => {
+  this.setState({
+    query:event.target.value
+  })
+}
 
+onInputClick = event => {
+  this.setState({
+    query: ''
+  })
+}
   render() {
     return (
       <div>
         <CityMap
         locations={this.state.locations}
 	      query={this.state.query}
+        selectedMarkerInfoWindow={this.state.selectedMarkerInfoWindow}
+
           />
+
         <PlacesList
         locations={this.state.locations}
         query={this.state.query}
+        onClickLocation={this.onClickLocation}
+        onChangeQuery={this.updateQuery}
+        onInputClick={this.onInputClick}
         />
       </div>
     );
