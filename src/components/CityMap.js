@@ -13,28 +13,15 @@ document.addEventListener("DOMContentLoaded", function(error) {
 });
 
 class CityMap extends Component {
-state = {
-  markerSelected:{},
-  placeSelected:{},
-  markerInfoWindowSelected:false
-}
-
-//function for changing the state with the selected marker
-onClickMarker =(props,marker) => {
-  this.setState ({
-    markerSelected:marker,
-    placeSelected:props,
-    markerInfoWindowSelected:true
-  })
-}
-
 render(){
   const bound = new this.props.google.maps.LatLngBounds()
   const expression = new RegExp(escregexp(this.props.query).toLowerCase().trim())
 	    for (let i = 0; i < this.props.locations.length; i++) {
       		bound.extend(this.props.locations[i].position)
     	}
+
   return (
+
     <Map
     google={this.props.google}
     initialCenter={{lat:45.266301, lng:27.961932}}
@@ -61,24 +48,28 @@ render(){
             title={location.title}
           // set animation for markers
             animation={this.props.google.maps.Animation.Fo}
-            onClick = {this.onClickMarker}
+            onClick = {this.props.onClickMarker}
+
           />
         )
   })
 }
-    <InfoWindow marker = {this.state.markerSelected} visible = {this.state.markerInfoWindowSelected}>
+    <InfoWindow marker = {this.props.markerSelected} visible = {this.props.markerInfoWindowSelected}>
       <div>
-        <h2>{this.state.placeSelected.title}</h2>
-        <h3>{this.state.placeSelected.category}</h3>
-        <p>Address:{this.state.placeSelected.address}</p>
+        <h2>{this.props.placeSelected.title}</h2>
+        <h3>{this.props.placeSelected.category}</h3>
+        <p>Address:{this.props.placeSelected.address}</p>
         <p><strong> More on <a rel="external" href="https://foursquare.com/">Foursquare</a></strong></p>
+        
       </div>
-    </InfoWindow>
 
+    </InfoWindow>
   </Map>
   )
   }
 }
-export default GoogleApiWrapper({
+export default GoogleApiWrapper(
+
+  {
   apiKey:'AIzaSyBWjPICGYkhv1oJwcSXWfD2BTNdoGwHVEw'
 })(CityMap)

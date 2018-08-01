@@ -5,7 +5,10 @@ import PlacesList from './components/PlacesList'
 class App extends Component {
   state = {
   locations: [],
-  query: ''
+  query: '',
+  markerInfoWindowSelected:false,
+  placeSelected:[],
+  marker:{}
 }
 
 // Fetch locations from Forsquare
@@ -35,11 +38,30 @@ componentDidMount() {
   })
 }
 
-onClickLocation = event => {
+onClickMarker =(props,marker) => {
+  this.setState ({
+    markerSelected:marker,
+    placeSelected:props,
+    markerInfoWindowSelected:true
+  })
+  console.log(marker)
+}
+
+
+onClickLocation = (event) => {
   this.setState({
     query: event.target.textContent
-    })
+  })
+
+  for (const location of this.state.locations) {
+    if (location.title === event.target.textContent) {
+   alert('LOCATION: '+location.title+'\n'
+   +'TYPE: '+location.category+'\n'
+   +'ADDRESS: '+location.address+'\n'
+   +'for more ... click on the marker and search on foursquare.com')
+    }
   }
+}
 
 updateQuery = event => {
   this.setState({
@@ -56,11 +78,14 @@ onInputClick = event => {
     return (
       <div>
         <CityMap
+        onClickMarker={this.onClickMarker}
         locations={this.state.locations}
-	      query={this.state.query}
-        selectedMarkerInfoWindow={this.state.selectedMarkerInfoWindow}
-
-          />
+        query={this.state.query}
+        markerInfoWindowSelected={this.state.markerInfoWindowSelected}
+        placeSelected={this.state.placeSelected}
+        markerSelected={this.state.markerSelected}
+        onClickLocation = {this.onClickLocation}
+        />
 
         <PlacesList
         locations={this.state.locations}
@@ -68,6 +93,9 @@ onInputClick = event => {
         onClickLocation={this.onClickLocation}
         onChangeQuery={this.updateQuery}
         onInputClick={this.onInputClick}
+        markerInfoWindowSelected={this.state.markerInfoWindowSelected}
+        placeSelected={this.state.placeSelected}
+        markerSelected={this.state.markerSelected}
         />
       </div>
     );
